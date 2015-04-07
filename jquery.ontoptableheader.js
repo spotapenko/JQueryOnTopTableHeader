@@ -47,14 +47,13 @@ use smth like in you html:
  */
 
 
-
 (function( $ ) {
     $.fn.onTopTableHeader = function(options) {
 
         var settings = $.extend( {
-            'class': 'tableClass',
+            'wrapperClass': 'tableClass',
             'addButtonAfter': '.divClass',
-            'addButtonHtml': '<a href="#" class="move_to_top" onclick="window.scrollTo(0,0);">top</a>',
+            'addButtonHtml': '<a href="#" style="display:none;" class="move_to_top" onclick="window.scrollTo(0,0);">top</a>',
             'marginTop': 200,
             'fixedBoxId' : 'fixedBox',
             'fixedBoxAddClass' : 'table-header-fixed'
@@ -65,12 +64,14 @@ use smth like in you html:
             var $this = $(this);
             var content = $this.html();
 
+            $('.move_to_top').hide();
+
             if($this.length) {
 
                 var classList = $this.attr('class').split(/\s+/);
                 var newClassListStr = "";
                 $.each( classList, function(index, item){
-                    if (item !== settings.class) {
+                    if (item !== settings.wrapperClass) {
                         newClassListStr = newClassListStr+' '+item;
                     }
                 });
@@ -108,11 +109,13 @@ use smth like in you html:
                     if (jQuery("#"+settings.fixedBoxId+"").length) {
                         var top  = getScrollTop();
                         if(top > settings.marginTop) {
-                            $('.'+settings.class+' thead tr').css('visibility','hidden');
+                            $('.'+settings.wrapperClass+' thead tr').css('visibility','hidden');
                             $('.'+settings.fixedBoxAddClass).show();
+                            $('.move_to_top').show();
                         } else {
-                            $('.'+settings.class+' thead tr').css('visibility','visible');
+                            $('.'+settings.wrapperClass+' thead tr').css('visibility','visible');
                             $('.'+settings.fixedBoxAddClass).hide();
+                            $('.move_to_top').hide();
                         }
                     }
                 }
